@@ -8,6 +8,7 @@ Created on Sat Feb 27 01:55:48 2021
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score,f1_score
+from sklearn.naive_bayes import MultinomialNB
 import numpy as np
 
 
@@ -25,6 +26,46 @@ class Classifieur():
     
     def fMeasure(self,label_pred,y_test):
         return f1_score(y_test, label_pred, average='weighted')
+    
+    
+   
+class Aleatoire(Classifieur):
+    """ Classifieur Aleatoire """
+    
+    def __init__(self, labels_unique):
+        self.labels_unique=labels_unique
+    
+        
+    def predict(self, data_x):
+        
+        return np.random.random_integers(0,len(self.labels_unique), data_x.shape[0])
+    
+    
+class Majoritaire(Classifieur):
+    """ Classifieur Majoritaire """
+    
+    def __init__(self,labels_unique):
+        """
+        -------
+        labels_unique : liste de string des domaines industriels
+        -------
+        """
+        
+        self.labels_unique=[i for i in range(len(labels_unique))]
+        self.classe_majoritaire=""
+    
+    def fit(self,label_train):
+        #Trouver la classe majoritaire
+        
+        classes={c: label_train.count(c)  for c in self.labels_unique}
+        x = sorted(classes, key=(lambda key:classes[key]), reverse=True)
+        self.classe_majoritaire=x[0]
+        print(classes)
+        
+        
+    def predict(self,data_x):
+        n=data_x.shape[0]
+        return [ self.classe_majoritaire for i in range(n)]
     
 class SVM(Classifieur):
     """ Classifieur SVM """
@@ -55,18 +96,23 @@ class KNN(Classifieur):
     def predict(self, data_x):
         return self.knn.predict(data_x)
     
-   
-class Aleatoire(Classifieur):
-    """ Classifieur Aleatoire """
     
-    def __init__(self, labels_unique):
-        self.labels_unique=labels_unique
+class MultinomialNaiveBayes(Classifieur):
+     """ Multinomial Naive Bayes """
+     
+     def __init__(self):
+         self.clf=MultinomialNB()
+         
+     def fit(self,x,y):
+         self.clf.fit(x,y)
         
-    def predict(self, data_x):
-        
-        return np.random.random_integers(0,len(self.labels_unique), data_x.shape[0])
+     def predict(self,x):
+         return self.clf.predict(x)
+     
     
-        
+    
+    
+    
     
 
     

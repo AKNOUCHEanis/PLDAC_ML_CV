@@ -9,7 +9,7 @@ import pickle
 import numpy as np
 from Utils import getCVTextsAndLabels, tokenize, vectorization
 from sklearn import model_selection 
-from Classifieurs import SVM, KNN, Aleatoire
+from Classifieurs import SVM, KNN, Aleatoire, Majoritaire, MultinomialNaiveBayes
 
 
 data_cv = pickle.load( open( "CV_5000_PLDAC.pkl", "rb" ) )
@@ -34,6 +34,7 @@ print(data_cv[1].get('jobs')[0].values())
 textsCV, labelsCV=getCVTextsAndLabels(data_cv)
 textsCV=tokenize(textsCV)
 dataSet_x, dataLabel_y, labels=vectorization(textsCV, labelsCV)
+
 
 #découpage des données d'entrainements et tests
 x_train, x_test, y_train, y_test = model_selection.train_test_split(dataSet_x,dataLabel_y, train_size=0.80, test_size=0.20, random_state=101)
@@ -67,11 +68,29 @@ aleatoire=Aleatoire(labels)
 
 print('Accuracy (KNN): ', "%.2f" % (aleatoire.accuracy(aleatoire.predict(x_test),y_test)*100))
 print('F1 (poly (KNN): ', "%.2f" % (aleatoire.fMeasure(aleatoire.predict(x_test),y_test)*100))
- #Obtention d'une accuracy de 5.80 et F1-measure de 6.64
+ #Obtention d'une accuracy de 5.80% et F1-measure de 6.64%
 """
 
+"""
+#test d'un classifieur Majoritaire
+
+majoritaire=Majoritaire(labels)
+majoritaire.fit(y_train)
 
 
+print('Accuracy (Majoritaire): ', "%.2f" % (majoritaire.accuracy(majoritaire.predict(x_test),y_test)*100))
+print('F1 (poly (Majoritaire): ', "%.2f" % (majoritaire.fMeasure(majoritaire.predict(x_test),y_test)*100))
 
+ #Obtention d'une accuracy de 14.69% et F1-Measure de 3.76%
+"""
 
+#test d'un classifieur mutlinomial naive bayes 
+
+clf=MultinomialNaiveBayes()
+clf.fit(x_train, y_train)
+
+print('Accuracy (MultinomialNaiveBayes): ', "%.2f" % (clf.accuracy(clf.predict(x_test),y_test)*100))
+print('F1 (poly (MultinomialNaiveBayes): ', "%.2f" % (clf.fMeasure(clf.predict(x_test),y_test)*100))
+
+#Obtention d'une accuracy de 47.53% et F1-Measure de 42.30%
 

@@ -27,14 +27,16 @@ def getCVTextsAndLabels(data_cv):
     textsCV=[]
     for nbCV in range(5000): 
         textCVi=[]
-        for i in data_cv[nbCV].get('jobs'):
-            textCVi=textCVi+list(i.values())
-        textCVi=textCVi+data_cv[nbCV].get('skills')
-        for i in data_cv[nbCV].get('edu'):
-            textCVi=textCVi+list(i.values())
-        labelsCV.append(data_cv[nbCV].get('industry'))
-        textCVi=list(map(str, textCVi))
-        textsCV.append(' '.join(textCVi))
+        domaine_industriel=data_cv[nbCV].get('industry')
+        if domaine_industriel != '':
+            for i in data_cv[nbCV].get('jobs'):
+                textCVi=textCVi+list(i.values())
+            textCVi=textCVi+data_cv[nbCV].get('skills')
+            for i in data_cv[nbCV].get('edu'):
+                textCVi=textCVi+list(i.values())
+            labelsCV.append(domaine_industriel)
+            textCVi=list(map(str, textCVi))
+            textsCV.append(' '.join(textCVi))
     return textsCV, labelsCV
 
 
@@ -87,9 +89,11 @@ def vectorization(textsCV,labelsCV):
     dataLabel_y=np.array(labelsCV)
     label_y=list(np.unique(dataLabel_y))
     dataLabel_y_num=[label_y.index(y) for y in dataLabel_y]
+    
     return dataSet_x, dataLabel_y_num, label_y
     
     
+
     
     
     
