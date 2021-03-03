@@ -36,8 +36,16 @@ textsCV=tokenize(textsCV)
 dataSet_x, dataLabel_y, labels=vectorization(textsCV, labelsCV)
 
 
+tmp=np.sum(dataSet_x,axis=0)
+#Liste contenant des listes d'indices des mots avec 0 ou 1 occurence seulement dans le dataset réduit
+listeIndOcc=[]
+for i in range(4):
+    listeIndOcc.append(list(np.where(tmp==i)[0]))
+listeIndOcc=listeIndOcc[0]+listeIndOcc[1]+listeIndOcc[2]+listeIndOcc[3]
+dataSet_x=np.delete(dataSet_x,listeIndOcc,axis=1)
 #découpage des données d'entrainements et tests
 x_train, x_test, y_train, y_test = model_selection.train_test_split(dataSet_x,dataLabel_y, train_size=0.80, test_size=0.20, random_state=101)
+
 
 """
 #Test d'un classifieur SVM
@@ -90,7 +98,7 @@ clf=MultinomialNaiveBayes()
 clf.fit(x_train, y_train)
 
 print('Accuracy (MultinomialNaiveBayes): ', "%.2f" % (clf.accuracy(clf.predict(x_test),y_test)*100))
-print('F1 (poly (MultinomialNaiveBayes): ', "%.2f" % (clf.fMeasure(clf.predict(x_test),y_test)*100))
+print('F1 (MultinomialNaiveBayes): ', "%.2f" % (clf.fMeasure(clf.predict(x_test),y_test)*100))
 
 #Obtention d'une accuracy de 47.53% et F1-Measure de 42.30%
 
