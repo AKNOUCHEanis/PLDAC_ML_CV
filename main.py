@@ -12,6 +12,7 @@ from sklearn import model_selection
 from Classifieurs import SVM, KNN, Aleatoire, Majoritaire, MultinomialNaiveBayes
 
 
+
 data_cv = pickle.load( open( "CV_5000_PLDAC.pkl", "rb" ) )
 print(type(data_cv))
 
@@ -92,6 +93,7 @@ print('F1 (poly (Majoritaire): ', "%.2f" % (majoritaire.fMeasure(majoritaire.pre
  #Obtention d'une accuracy de 14.69% et F1-Measure de 3.76%
 """
 
+"""
 #test d'un classifieur mutlinomial naive bayes 
 
 clf=MultinomialNaiveBayes()
@@ -101,4 +103,5 @@ print('Accuracy (MultinomialNaiveBayes): ', "%.2f" % (clf.accuracy(clf.predict(x
 print('F1 (MultinomialNaiveBayes): ', "%.2f" % (clf.fMeasure(clf.predict(x_test),y_test)*100))
 
 #Obtention d'une accuracy de 47.53% et F1-Measure de 42.30%
+"""
 
