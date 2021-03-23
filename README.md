@@ -4,3 +4,4 @@ Analyse d’un corpus du CV, apprentissage de représentation sur des documents 
 v2
 
 v3
+V4
